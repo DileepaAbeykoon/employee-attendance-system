@@ -5,6 +5,8 @@ import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.dto.AttendanceRequestDTO;
 import com.example.demo.entity.Attendance;
 import com.example.demo.entity.Employee;
+
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +26,14 @@ public class AttendanceService {
     public Attendance markAttendance(AttendanceRequestDTO dto) {
         Employee employee = employeeRepo.findById(dto.getEmployeeId())
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
+        
+        LocalDate today = LocalDate.now();   
+        
+        //  Check if attendance already exists for this employee today
+        Optional<Attendance> existing = attendanceRepo.findByEmployeeIdAndDate(dto.getEmployeeId(), today);
+        if (existing.isPresent()) {
+            throw new RuntimeException("Attendance already marked for today for this employee.");
+        }
 
         Attendance attendance = Attendance.builder()
                 .employee(employee)

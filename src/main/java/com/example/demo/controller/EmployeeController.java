@@ -5,6 +5,7 @@ import com.example.demo.entity.Employee;
 import com.example.demo.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import jakarta.validation.Valid; 
 
 @RestController
 @RequestMapping("/api/employees")
@@ -16,24 +17,24 @@ public class EmployeeController {
     }
 
     // Endpoint to create a new employee
-    @PostMapping
-    public Employee createEmployee(@RequestBody EmployeeRequestDTO dto) {
+    @PostMapping()
+    public Employee createEmployee(@Valid @RequestBody EmployeeRequestDTO dto) {
         return employeeService.createEmployee(dto);
     }
 
     // Endpoint to get all employees
-    @GetMapping
+    @GetMapping()
     public List<Employee> getAllEmployees() {
         return employeeService.getAllEmployees();
     }
 
-    // Endpoint to update an employee
+    // Endpoints to update an employee by ID
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable Long id, @RequestBody EmployeeRequestDTO dto) {
+    public Employee updateEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeRequestDTO dto) {
         return employeeService.updateEmployee(id, dto);
     }
-    
-    // Endpoint to delete an employee
+
+    // Endpoints to delete an employee by ID
     @DeleteMapping("/{id}")
     public void deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
