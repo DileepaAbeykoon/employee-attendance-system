@@ -14,11 +14,13 @@ public class AttendanceService {
     private final EmployeeRepository employeeRepo;
     private final AttendanceRepository attendanceRepo;
 
+    // Constructor injection for repositories
     public AttendanceService(AttendanceRepository attendanceRepo, EmployeeRepository employeeRepo) {
         this.attendanceRepo = attendanceRepo;
         this.employeeRepo = employeeRepo;
     }
 
+    // Method to mark attendance for an employee
     public Attendance markAttendance(AttendanceRequestDTO dto) {
         Employee employee = employeeRepo.findById(dto.getEmployeeId())
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
@@ -33,7 +35,34 @@ public class AttendanceService {
         return attendanceRepo.save(attendance);
     }
 
+    // Method to get today's attendance records
     public List<Attendance> getTodayAttendance() {
         return attendanceRepo.findByDate(LocalDate.now());
     }
-}
+
+    // Method to get all attendance records
+    public List<Attendance> getAllAttendance() {
+        return attendanceRepo.findAll();
+    }
+
+    // Method to update attendance
+    public Attendance updateAttendance(Long id, AttendanceRequestDTO dto) {
+        Attendance attendance = attendanceRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Attendance record not found"));
+
+        attendance.setTimeIn(dto.getTimeIn());
+        attendance.setTimeOut(dto.getTimeOut());
+
+        return attendanceRepo.save(attendance);
+ 
+    }
+
+    // Method to delete attendance record
+    public void deleteAttendance(Long id) {
+        if (!attendanceRepo.existsById(id)) {
+            throw new RuntimeException("Attendance record not found with ID: " + id);
+        }
+        attendanceRepo.deleteById(id);
+    }
+
+}    

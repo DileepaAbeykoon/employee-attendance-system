@@ -14,6 +14,7 @@ public class EmployeeService {
         this.employeeRepo = employeeRepo;
     }
 
+    // Method to create a new employee
     public Employee createEmployee(EmployeeRequestDTO dto) {
         // Check for duplicate employee name
         if (employeeRepo.existsByName(dto.getName())) {
@@ -30,7 +31,35 @@ public class EmployeeService {
         return employeeRepo.save(employee);
     }
 
+    // Method to get all employees
     public List<Employee> getAllEmployees() {
         return employeeRepo.findAll();
     }
-}
+
+    // Method to get an employee by ID
+    public Employee getEmployeeById(Long id) {
+        return employeeRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
+    }
+
+    // Method to update an employee
+    public Employee updateEmployee(Long id, EmployeeRequestDTO dto) {
+        Employee employee = employeeRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
+
+        employee.setName(dto.getName());
+        employee.setRole(dto.getRole());
+        employee.setDepartment(dto.getDepartment());
+
+        return employeeRepo.save(employee);
+    }
+
+    // Method to delete an employee
+    public void deleteEmployee(Long id) {
+        if (!employeeRepo.existsById(id)) {
+            throw new RuntimeException("Employee not found with ID: " + id);
+        }
+        employeeRepo.deleteById(id);
+    }
+
+}    

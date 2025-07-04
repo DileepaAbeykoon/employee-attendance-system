@@ -22,16 +22,19 @@ public class AttendanceController {
         this.attendanceService = attendanceService;
     }
 
+    // Endpoint to mark attendance
     @PostMapping("/mark")
     public Attendance mark(@RequestBody AttendanceRequestDTO dto) {
         return attendanceService.markAttendance(dto);
     }
 
+    // Endpoint to get today's attendance records
     @GetMapping("/today")
     public List<Attendance> today() {
         return attendanceService.getTodayAttendance();
     }
 
+    // Endpoint to download today's attendance report as PDF
     @GetMapping("/report/pdf")
     public void downloadPdfReport(HttpServletResponse response) throws IOException {
         List<Attendance> attendances = attendanceService.getTodayAttendance();
@@ -44,4 +47,37 @@ public class AttendanceController {
         org.apache.commons.io.IOUtils.copy(bis, response.getOutputStream());
         response.flushBuffer();
     }
-}
+
+    //Endpoint to get all attendance records
+    @GetMapping("/all")
+    public List<Attendance> getAllAttendance() {
+        return attendanceService.getAllAttendance();        
+    }
+
+    // Endpoint to download all attendance records as PDF
+    @GetMapping("/all/report/pdf")
+    public void downloadAllPdfReport(HttpServletResponse response) throws IOException {
+        List<Attendance> attendances = attendanceService.getAllAttendance();
+
+        ByteArrayInputStream bis = PdfReportGenerator.generateAttendanceReport(attendances);
+
+        response.setContentType(MediaType.APPLICATION_PDF_VALUE);
+        response.setHeader("Content-Disposition", "attachment; filename=attendance_report.pdf");
+
+        org.apache.commons.io.IOUtils.copy(bis, response.getOutputStream());
+        response.flushBuffer();
+    }
+
+    // Endpoint to update attendance record
+    @PutMapping("/{id}")
+    public Attendance updateAttendance(@PathVariable Long id, @RequestBody AttendanceRequestDTO dto) {
+        return attendanceService.updateAttendance(id, dto);
+    }
+
+    // Endpoint to delete attendance record
+    @DeleteMapping("/{id}")
+    public void deleteAttendance(@PathVariable Long id) {
+        attendanceService.deleteAttendance(id);
+    }
+
+}    
