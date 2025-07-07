@@ -51,12 +51,12 @@ mvn spring-boot:run
 ---
 
 ## 📸 Screenshots  
-🔗 [View Screenshots Here](#https://drive.google.com/drive/folders/1VIeOxTR_ZKXVnrIn93kztQ0aVerQye3P?usp=sharing) 
+🔗 [View Screenshots Here](https://drive.google.com/drive/folders/1VIeOxTR_ZKXVnrIn93kztQ0aVerQye3P?usp=sharing) 
 
 ---
 
 ## 🎥 Demo Video  
-🔗 [Watch Demo Video](#https://drive.google.com/file/d/17GBjV9nTWOTu4wQYRVx7EhKzhgVuTP2k/view?usp=sharing) 
+🔗 [Watch Demo Video](https://drive.google.com/file/d/17GBjV9nTWOTu4wQYRVx7EhKzhgVuTP2k/view?usp=sharing) 
 
 ---
 
